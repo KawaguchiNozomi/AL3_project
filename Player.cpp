@@ -26,7 +26,7 @@ void Player::Update() {
 		move.y += kCharacterSpeed;
 	}
 
-	//worldTransform_.translation_ += move;
+	
 }
 
 void Player::Draw(ViewProjection viewProjection) { 
