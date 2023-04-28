@@ -1,12 +1,14 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "AxisIndicator.h"
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() { 
 	delete model_;
 	delete player_;
+	delete debugCamera_;
 }
 
 void GameScene::Initialize() {
@@ -14,6 +16,7 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+	debugCamera_ = new DebugCamera(50, 50);
 
 	textureHandle_ = TextureManager::Load("sample.png");
 	model_ = Model::Create();
@@ -24,9 +27,31 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	//自キャラ初期化
 	player_->Initialize(model_,textureHandle_);
+
+	//軸方向表示を有効にする
+	AxisIndicator::GetInstance()->SetVisible(true);
+	//軸方向が参照するビュープロジェクションを指定する(アドレス渡し)
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 }
 
-void GameScene::Update() { player_->Update(); }
+void GameScene::Update() { 
+	player_->Update();
+
+	#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_0)) {
+		isDebugCameraActive_ = true;
+	}
+#endif // _DEBUG
+	if (isDebugCameraActive_) {
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		//ビュープロジェクションの行列転送
+		viewProjection_.TransferMatrix();
+	} else {
+		viewProjection_.UpdateMatrix();
+	}
+}
 
 void GameScene::Draw() {
 
