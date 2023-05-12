@@ -1,5 +1,11 @@
 ﻿#include "Player.h"
 
+Player::~Player() {
+	for (PlayerBullet* bullet : bullets_) {
+		delete bullet;
+	}
+}
+
 void Player::Initialize(Model* model, uint32_t textureHandle) { 
 	assert(model);
 	model_ = model;
@@ -56,9 +62,9 @@ void Player::Update() {
 
 	//キャラクター攻撃処理
 	Attack();
-	//nullptrじゃない時に弾を更新する
-	if (bullet_) {
-		bullet_->Update();
+	//弾を更新する
+	for (PlayerBullet*bullet : bullets_) {
+		bullet->Update();
 	}
 
 	//ImGui
@@ -76,18 +82,19 @@ void Player::Update() {
 
 void Player::Draw(ViewProjection& viewProjection) { 
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	if (bullet_) {
-		bullet_->Draw(viewProjection);
+	for (PlayerBullet*bullet : bullets_) {
+		bullet->Draw(viewProjection);
 	}
 
 }
 
 void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
+		
 		//弾を生成し初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 		//弾を登録する
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }

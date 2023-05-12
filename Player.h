@@ -6,11 +6,16 @@
 #include "ImGuiManager.h"
 #include <assert.h>
 #include "PlayerBullet.h"
+#include <list>
 /// <summary>
 /// 
 /// </summary>
 class Player {
 public:
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Player();
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -28,7 +33,7 @@ private:
 	Model* model_ = nullptr;
 	WorldTransform worldTransform_;
 	Input* input_ = nullptr;
-	PlayerBullet* bullet_ = nullptr;
+	std::list<PlayerBullet*> bullets_;
 	/// <summary>
 	/// 攻撃
 	/// </summary>
