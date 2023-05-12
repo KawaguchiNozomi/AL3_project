@@ -26,6 +26,13 @@ void Player::Update() {
 		move.y -= kCharacterSpeed;
 	}
 
+	//(・ω・)< Z軸移動の試し )
+	if (input_->GetWheel()>0) {
+		move.z += kCharacterSpeed;
+	} else if (input_->GetWheel()<0) {
+		move.z -= kCharacterSpeed;
+	}
+
 	const float kRotSpeed = 0.02f;
 
 	if (input_->PushKey(DIK_A)) {

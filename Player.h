@@ -23,15 +23,14 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw(ViewProjection& viewProjection);
-	/// <summary>
-	/// 攻撃
-	/// </summary>
-	void Attack();
-
 private:
 	uint32_t textureHandle_ = 0;
 	Model* model_ = nullptr;
 	WorldTransform worldTransform_;
 	Input* input_ = nullptr;
 	PlayerBullet* bullet_ = nullptr;
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
 };
