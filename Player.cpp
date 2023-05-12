@@ -26,12 +26,12 @@ void Player::Update() {
 		move.y -= kCharacterSpeed;
 	}
 
-	//(・ω・)< Z軸移動の試し )
-	if (input_->GetWheel()>0) {
-		move.z += kCharacterSpeed;
-	} else if (input_->GetWheel()<0) {
-		move.z -= kCharacterSpeed;
-	}
+	//Z軸移動
+	//if (input_->GetWheel()>0) {
+	//	move.z += kCharacterSpeed;
+	//} else if (input_->GetWheel()<0) {
+	//	move.z -= kCharacterSpeed;
+	//}
 
 	const float kRotSpeed = 0.02f;
 
@@ -90,7 +90,7 @@ void Player::Draw(ViewProjection& viewProjection) {
 }
 
 void Player::Attack() {
-	if (input_->PushKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_SPACE)) {
 		//弾を生成し初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
