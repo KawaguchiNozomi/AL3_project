@@ -18,10 +18,18 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
+
+	//サウンドデータの読み込み
+	soundDataHandle_ = audio_->LoadWave("mokugyo.wav");
+	//音声再生
+	audio_->PlayWave(soundDataHandle_);
+	voiceHandle = audio_->PlayWave(soundDataHandle_, true);
 }
 
 void GameScene::Update() { 
-
+	if (input_->TriggerKey(DIK_SPACE)){
+		audio_->StopWave(voiceHandle);
+	}
 }
 
 void GameScene::Draw() {

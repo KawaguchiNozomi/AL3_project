@@ -57,4 +57,8 @@ private: // メンバ変数
 	WorldTransform worldTransform_;
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
+	//サウンドデータハンドル
+	uint32_t soundDataHandle_ = 0;
+	//音声再生ハンドル
+	uint32_t voiceHandle = 0;
 };
