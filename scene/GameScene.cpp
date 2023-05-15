@@ -34,12 +34,16 @@ void GameScene::Initialize() {
 	//軸方向が参照するビュープロジェクションを指定する(アドレス渡し)
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
+	//敵キャラの生成
 	enemy_ = new Enemy;
+	//敵キャラの初期化
 	enemy_->Initialize(model_, {0, 0, 50});
 }
 
 void GameScene::Update() { 
+	//プレイヤー更新
 	player_->Update();
+	//敵更新
 	if (enemy_ != nullptr) {
 		enemy_->Update();
 	}
@@ -87,7 +91,9 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
+	//プレイヤー描画
 	player_->Draw(viewProjection_);
+	//敵描画
 	if (enemy_ != nullptr) {
 		enemy_->Draw(viewProjection_);
 	}
