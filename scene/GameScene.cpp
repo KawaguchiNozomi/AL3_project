@@ -9,6 +9,7 @@ GameScene::~GameScene() {
 	delete model_;
 	delete player_;
 	delete debugCamera_;
+	delete enemy_;
 }
 
 void GameScene::Initialize() {
@@ -32,10 +33,16 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	//軸方向が参照するビュープロジェクションを指定する(アドレス渡し)
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
+	enemy_ = new Enemy;
+	enemy_->Initialize(model_, {0, 0, 50});
 }
 
 void GameScene::Update() { 
 	player_->Update();
+	if (enemy_ != nullptr) {
+		enemy_->Update();
+	}
 
 	#ifdef _DEBUG
 	if (input_->TriggerKey(DIK_0)) {
@@ -81,6 +88,9 @@ void GameScene::Draw() {
 	/// </summary>
 
 	player_->Draw(viewProjection_);
+	if (enemy_ != nullptr) {
+		enemy_->Draw(viewProjection_);
+	}
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
