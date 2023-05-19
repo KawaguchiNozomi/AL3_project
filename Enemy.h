@@ -22,6 +22,11 @@ public:
 	void Draw(const ViewProjection& viewProjection);
 
 private:
+	enum class Phase {
+		Approach, // 近接する
+		Leave,    // 離脱する
+	};
+	Phase phase_ = Phase::Approach;
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0;

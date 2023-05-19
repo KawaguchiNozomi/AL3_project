@@ -14,8 +14,22 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 }
 
 void Enemy::Update() {
-	//移動処理
-	worldTransform_.translation_.z--;
+	switch (phase_) {
+	case Phase::Approach:
+		worldTransform_.translation_.z -=1.0f;
+		if (worldTransform_.translation_.z < -4.0f) {
+			phase_ = Phase::Leave;
+		}
+		break;
+	case Phase::Leave:
+		worldTransform_.translation_.z +=1.0f;
+		if (worldTransform_.translation_.z > 40.0f) {
+			phase_ = Phase::Approach;
+		}
+		break;
+	default:
+		break;
+	}
 	// ワールドトランスフォームの更新
 	worldTransform_.UpdateMatrix();
 }
