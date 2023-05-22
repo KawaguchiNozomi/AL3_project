@@ -37,7 +37,7 @@ void GameScene::Initialize() {
 	//敵キャラの生成
 	enemy_ = new Enemy;
 	//敵キャラの初期化
-	enemy_->Initialize(model_, {0, 0, 50});
+	enemy_->Initialize(model_, {10, 0, 50});
 }
 
 void GameScene::Update() { 
