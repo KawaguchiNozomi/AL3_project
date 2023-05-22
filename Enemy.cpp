@@ -22,10 +22,8 @@ void Enemy::Update() {
 		}
 		break;
 	case Phase::Leave:
-		worldTransform_.translation_.z +=1.0f;
-		if (worldTransform_.translation_.z > 40.0f) {
-			phase_ = Phase::Approach;
-		}
+		worldTransform_.translation_.y +=0.2f;
+		worldTransform_.translation_.x -= 0.2f;
 		break;
 	default:
 		break;
