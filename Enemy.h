@@ -5,6 +5,9 @@
 #include "WorldTransform.h"
 #include "EnemyBullet.h"
 #include <list>
+//前方宣言
+class Player;
+
 /// <summary>
 /// 敵
 /// </summary>
@@ -26,8 +29,18 @@ public:
 
 	void ApproachIntialize();
 	void ApproachUpdate();
+	void SetPlayer(Player* player) { player_ = player; }
+	Vector3 GetWorldPosition();
+
+	const float GetRadius() { return radius_; }
+	const float radius_ = 1.0f;
+
+	void OnCollision();
+
+	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
+
 	//発車時間
-	static const int kFireInterval = 60;
+	static const int kFireInterval = 30;
 
 private:
 	enum class Phase {
@@ -41,5 +54,6 @@ private:
 	std::list<EnemyBullet*> bullets_;
 	//発射タイマー
 	int32_t fireTimer_ = 0;
+	Player* player_ = nullptr;
 	void Fire();
 };

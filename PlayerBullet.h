@@ -23,7 +23,13 @@ public:
 	/// </summary>
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(const ViewProjection& viewProjection);
+	Vector3 GetWorldPosition();
 	bool IsDead() const { return isDead_; }
+
+	const float GetRadius() { return radius_; }
+	const float radius_ = 1.0f;
+
+	void OnCollision();
 
 private:
 	WorldTransform worldTransform_;

@@ -11,7 +11,7 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="position">初期座標</param>
-	void Initialize(Model* model, const Vector3& position);
+	void Initialize(Model* model, const Vector3& position,const Vector3&velocity);
 	/// <summary>
 	/// 更新
 	/// </summary>
@@ -23,6 +23,14 @@ public:
 	void Draw(const ViewProjection& viewProjection);
 
 	bool IsDead() const { return isDead_; }
+
+	Vector3 GetWorldPosition();
+
+	const float GetRadius() { return radius_; }
+	const float radius_ = 1.0f;
+
+	void OnCollision();
+
 
 private:
 	WorldTransform worldTransform_;

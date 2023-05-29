@@ -28,6 +28,17 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw(ViewProjection& viewProjection);
+
+	Vector3 GetWorldPosition();
+
+	const float GetRadius() { return radius_; }
+	const float radius_ = 1.0f;
+
+	void OnCollision();
+
+	
+	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
+
 private:
 	uint32_t textureHandle_ = 0;
 	Model* model_ = nullptr;
@@ -38,4 +49,5 @@ private:
 	/// 攻撃
 	/// </summary>
 	void Attack();
+
 };
