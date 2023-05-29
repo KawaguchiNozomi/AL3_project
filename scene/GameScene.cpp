@@ -49,8 +49,6 @@ void GameScene::Update() {
 		enemy_->Update();
 	}
 
-	CheckAllCollisions();
-
 	#ifdef _DEBUG
 	if (input_->TriggerKey(DIK_0)) {
 		isDebugCameraActive_ = true;
@@ -117,70 +115,4 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
-}
-
-void GameScene::CheckAllCollisions() { 
-	//判定対象AとBの座標
-	Vector3 posA, posB;
-
-    //プレイヤーの弾リスト
-    //
-	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
-    //敵の弾リスト
-    const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
-
-    #pragma region
-    posA = player_->GetWorldPosition();
-    
-    for (EnemyBullet* bullet : enemyBullets) {
-    
-    	posB = bullet->GetWorldPosition();
-    	float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-    	                 (posB.y - posA.y) * (posB.y - posA.y) +
-    	                 (posB.z - posA.z) * (posB.z - posA.z);
-    	float radius =
-    		(player_->GetRadius() + bullet->GetRadius()) * (player_->GetRadius() + bullet->GetRadius());
-    
-		if (distance <= radius) {
-			player_->OnCollision();
-			bullet->OnCollision();
-		}
-    }
-	#pragma endregion
-
-	//#pragma region
-	//posA = enemy_->GetWorldPosition();
-	//for (PlayerBullet* bullet : playerBullets) {
-	//	posB = bullet->GetWorldPosition();
-	//
-	//	float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-	//	                 (posB.y - posA.y) * (posB.y - posA.y) +
-	//	                 (posB.z - posA.z) * (posB.z - posA.z);
-	//	float radius = (enemy_->GetRadius() + bullet->GetRadius()) *
-	//	               (enemy_->GetRadius() + bullet->GetRadius());
-	//
-	//	if (distance <= radius) {
-	//		enemy_->OnCollision();
-	//		bullet->OnCollision();
-	//	}
-	//}
-	//#pragma endregion
-
-	#pragma region
-	for (PlayerBullet* bulletP : playerBullets) {
-		posA = bulletP->GetWorldPosition();
-		for (EnemyBullet* bulletE : enemyBullets) {
-			posB = bulletE->GetWorldPosition();
-			float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-			                 (posB.y - posA.y) * (posB.y - posA.y) +
-			                 (posB.z - posA.z) * (posB.z - posA.z);
-			float radius = (bulletP->GetRadius() + bulletE->GetRadius()) *
-			               (bulletP->GetRadius() + bulletE->GetRadius());
-
-			if (distance <= radius) {
-				bulletP->OnCollision();
-				bulletE->OnCollision();
-			}
-		}
-	}
 }
