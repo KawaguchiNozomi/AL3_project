@@ -148,23 +148,23 @@ void GameScene::CheckAllCollisions() {
     }
 	#pragma endregion
 
-	//#pragma region
-	//posA = enemy_->GetWorldPosition();
-	//for (PlayerBullet* bullet : playerBullets) {
-	//	posB = bullet->GetWorldPosition();
-	//
-	//	float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-	//	                 (posB.y - posA.y) * (posB.y - posA.y) +
-	//	                 (posB.z - posA.z) * (posB.z - posA.z);
-	//	float radius = (enemy_->GetRadius() + bullet->GetRadius()) *
-	//	               (enemy_->GetRadius() + bullet->GetRadius());
-	//
-	//	if (distance <= radius) {
-	//		enemy_->OnCollision();
-	//		bullet->OnCollision();
-	//	}
-	//}
-	//#pragma endregion
+	#pragma region
+	posA = enemy_->GetWorldPosition();
+	for (PlayerBullet* bullet : playerBullets) {
+		posB = bullet->GetWorldPosition();
+	
+		float distance = (posB.x - posA.x) * (posB.x - posA.x) +
+		                 (posB.y - posA.y) * (posB.y - posA.y) +
+		                 (posB.z - posA.z) * (posB.z - posA.z);
+		float radius = (enemy_->GetRadius() + bullet->GetRadius()) *
+		               (enemy_->GetRadius() + bullet->GetRadius());
+	
+		if (distance <= radius) {
+			enemy_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+	#pragma endregion
 
 	#pragma region
 	for (PlayerBullet* bulletP : playerBullets) {
