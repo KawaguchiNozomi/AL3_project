@@ -12,6 +12,7 @@ GameScene::~GameScene() {
 	delete enemy_;
 	delete modelSkydome_;
 	delete skydome_;
+	delete railCamera_;
 }
 
 void GameScene::Initialize() {
@@ -28,8 +29,9 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 	//	自キャラ生成
 	player_ = new Player();
+	Vector3 playerPosition(0, 0, 30.0f);
 	//自キャラ初期化
-	player_->Initialize(model_,textureHandle_);
+	player_->Initialize(model_,textureHandle_,playerPosition);
 
 	//軸方向表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -46,7 +48,12 @@ void GameScene::Initialize() {
 	skydome_ = new Skydome();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_->Initialize(modelSkydome_);
+
+	//レールカメラの初期化
+	railCamera_ = new RailCamera();
+	railCamera_->Initialize(worldTransform_.translation_,worldTransform_.rotation_);
 	
+	player_->SetParent(&railCamera_->GetWorldTransform());
 }
 
 void GameScene::Update() { 
@@ -61,6 +68,12 @@ void GameScene::Update() {
 
 	CheckAllCollisions();
 
+	if (isDebugCameraActive_ == false) {
+		railCamera_->Update();
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
+	}
 	#ifdef _DEBUG
 	if (input_->TriggerKey(DIK_0)) {
 		isDebugCameraActive_ = true;
@@ -72,8 +85,11 @@ void GameScene::Update() {
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		//ビュープロジェクションの行列転送
 		viewProjection_.TransferMatrix();
+		if (input_->TriggerKey(DIK_9)) {
+			isDebugCameraActive_ = false;
+		}
 	} else {
-		viewProjection_.UpdateMatrix();
+		//viewProjection_.UpdateMatrix();
 	}
 }
 

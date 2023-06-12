@@ -7,7 +7,7 @@ Player::~Player() {
 	}
 }
 
-void Player::Initialize(Model* model, uint32_t textureHandle) { 
+void Player::Initialize(Model* model, uint32_t textureHandle,Vector3 position) { 
 	assert(model);
 	model_ = model;
 	textureHandle_ = textureHandle;
@@ -15,6 +15,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	input_ = Input::GetInstance();
 
 	worldTransform_.Initialize();
+	worldTransform_.translation_ = position;
 }
 
 void Player::Update() {  
@@ -27,7 +28,7 @@ void Player::Update() {
 		return false;
 	});
 
-	Vector3 move = {0, 0, 0};
+	Vector3 move = {0,0,0};
 
 	const float kCharacterSpeed = 0.2f;
 
@@ -60,13 +61,11 @@ void Player::Update() {
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
-
 	worldTransform_.translation_.x += move.x;
 	worldTransform_.translation_.y += move.y;
 	worldTransform_.translation_.z += move.z;
 
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	worldTransform_.UpdateMatrix();
 
 	worldTransform_.TransferMatrix();
 
@@ -100,9 +99,9 @@ void Player::Draw(ViewProjection& viewProjection) {
 
 Vector3 Player::GetWorldPosition() {
 	Vector3 worldPos;
-	worldPos.x = worldTransform_.translation_.x;
-	worldPos.y = worldTransform_.translation_.y;
-	worldPos.z = worldTransform_.translation_.z;
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
 }
@@ -115,12 +114,13 @@ void Player::Attack() {
 		//弾の速度
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
-
 		velocity = TransforNomal(velocity, worldTransform_.matWorld_);
 		//弾を生成し初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 		//弾を登録する
 		bullets_.push_back(newBullet);
 	}
 }
+
+void Player::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent; }

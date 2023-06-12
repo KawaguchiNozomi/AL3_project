@@ -1,4 +1,5 @@
 #include "MathUtility.h"
+#include <assert.h>
 
 Vector3 TransforNomal(const Vector3& v, const Matrix4x4& m)
 {

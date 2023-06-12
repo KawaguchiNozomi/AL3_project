@@ -22,6 +22,13 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& trans);
 /// <returns></returns>
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
 
+/// <summary>
+/// 逆行列
+/// </summary>
+/// <param name="m"></param>
+/// <returns></returns>
+Matrix4x4 Inverse(const Matrix4x4& m);
+
 //代入演算子オーバーロード
 Matrix4x4& operator*=(Matrix4x4& m1,const Matrix4x4& m2);
 Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
