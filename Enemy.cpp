@@ -1,12 +1,11 @@
 ﻿#include "Enemy.h"
 #include <assert.h>
 #include "Player.h"
+#include "GameScene.h"
 #include <cmath>
 
 Enemy::~Enemy() {
-	for (EnemyBullet* bullet : bullets_) {
-		delete bullet;
-	}
+
 }
 
 void Enemy::Initialize(Model* model, const Vector3& position) {
@@ -24,13 +23,7 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 
 void Enemy::Update() {
 
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
+		worldTransform_.UpdateMatrix();
 
 	switch (phase_) {
 	case Phase::Approach:
@@ -43,23 +36,21 @@ void Enemy::Update() {
 	case Phase::Leave:
 		worldTransform_.translation_.y +=0.2f;
 		worldTransform_.translation_.x += 0.2f;
+		if (deathTimer < 0) {
+			isDead = true;
+		}
 		break;
 	default:
 		break;
 	}
 	// ワールドトランスフォームの更新
-	worldTransform_.UpdateMatrix();
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
+	
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(viewProjection);
-	}
+	
 }
 
 void Enemy::ApproachIntialize() { fireTimer_ = kFireInterval; }
@@ -103,10 +94,10 @@ void Enemy::Fire() {
 
 	//長さを合わせた弾の速度
 	Vector3 velocity = {dir.x * kBulletSpeed, dir.y * kBulletSpeed, dir.z * kBulletSpeed};
+	EnemyBullet* bullet = new EnemyBullet();
+	bullet->Initialize(model_, worldTransform_.translation_, velocity);
 
 	// 弾を生成し初期化
-	EnemyBullet* newBullet = new EnemyBullet();
-	newBullet->Initialize(model_, worldTransform_.translation_,velocity);
-
-	bullets_.push_back(newBullet);
+	gameScene_->AddEnemyBullet(bullet);
+	
 }

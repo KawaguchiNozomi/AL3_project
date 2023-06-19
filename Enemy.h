@@ -3,10 +3,10 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "EnemyBullet.h"
 #include <list>
 //前方宣言
 class Player;
+class GameScene;
 
 /// <summary>
 /// 敵
@@ -30,14 +30,17 @@ public:
 	void ApproachIntialize();
 	void ApproachUpdate();
 	void SetPlayer(Player* player) { player_ = player; }
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
 	Vector3 GetWorldPosition();
 
 	const float GetRadius() { return radius_; }
+	bool GetIsDead() { return isDead; }
 	const float radius_ = 1.0f;
 
 	void OnCollision();
 
-	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
+	//const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 
 	//発車時間
 	static const int kFireInterval = 30;
@@ -51,9 +54,12 @@ private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0;
-	std::list<EnemyBullet*> bullets_;
 	//発射タイマー
 	int32_t fireTimer_ = 0;
 	Player* player_ = nullptr;
+	GameScene* gameScene_ = nullptr;
+	bool isDead = false;
+	int deathTimer = 300;
+
 	void Fire();
 };
