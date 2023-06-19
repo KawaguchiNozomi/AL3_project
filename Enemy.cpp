@@ -24,18 +24,20 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 void Enemy::Update() {
 
 		worldTransform_.UpdateMatrix();
-
+	
 	switch (phase_) {
 	case Phase::Approach:
 		ApproachUpdate();
+		if (worldTransform_.translation_.y <= 2.0f) {
+			worldTransform_.translation_.y += 0.01f;
+		}
 		worldTransform_.translation_.z -=0.2f;
 		if (worldTransform_.translation_.z < -4.0f) {
 			phase_ = Phase::Leave;
 		}
 		break;
 	case Phase::Leave:
-		worldTransform_.translation_.y +=0.2f;
-		worldTransform_.translation_.x += 0.2f;
+		LeaveUpdate();
 		if (deathTimer < 0) {
 			isDead = true;
 		}
@@ -60,6 +62,20 @@ void Enemy::ApproachUpdate() {
 	if (fireTimer_ == 0) {
 		Fire();
 		fireTimer_ = kFireInterval;
+	}
+}
+
+void Enemy::LeaveUpdate() {
+	float down = 0.05f + ((worldTransform_.translation_.y * worldTransform_.translation_.y) / 200);
+	if (down >= 1.5f) {
+		down = 1.5f;
+	}
+	worldTransform_.translation_.y -= down;
+	worldTransform_.rotation_.y -= 0.1f;
+	if (worldTransform_.translation_.x > 0) {
+		worldTransform_.translation_.x += 0.2f;
+	} else {
+		worldTransform_.translation_.x -= 0.2f;
 	}
 }
 

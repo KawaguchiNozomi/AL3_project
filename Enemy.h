@@ -29,6 +29,7 @@ public:
 
 	void ApproachIntialize();
 	void ApproachUpdate();
+	void LeaveUpdate();
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 

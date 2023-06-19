@@ -56,7 +56,7 @@ void GameScene::Initialize() {
 	railCamera_->Initialize(worldTransform_.translation_,worldTransform_.rotation_);
 	
 	player_->SetParent(&railCamera_->GetWorldTransform());
-	AddEnemy({0.0f, 5.0f, 30.0f});
+	//AddEnemy({0.0f, 5.0f, 30.0f});
 	LoadEnemyPopData();
 }
 
@@ -317,6 +317,6 @@ void GameScene::UpdateEnemyPopCommands() {
 			enemyWaitTimer_ = waitTime;
 			//コマンドループを抜ける
 			break;
-		}
+		} 
 	}
 }
