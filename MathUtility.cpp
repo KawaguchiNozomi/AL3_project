@@ -57,7 +57,19 @@ Vector3 operator*(const Vector3& v, const float& f) {
 	return temp *= f;
 }
 
-Vector3 operator-=(Vector3& v1, const Vector3& v2) { 
+Vector3 operator*=(Vector3& v1, const Vector3& v2) {
+	v1.x *= v2.x;
+	v1.y *= v2.y;
+	v1.z *= v2.z;
+	return v1;
+}
+
+Vector3 operator*(const Vector3& v1, const Vector3& v2) {
+	Vector3 temp(v1);
+	return temp *= v2;
+}
+
+Vector3 operator-=( Vector3& v1, const Vector3& v2) { 
 	v1.x -= v2.x;
 	v1.y -= v2.y;
 	v1.z -= v2.z;
@@ -67,4 +79,16 @@ Vector3 operator-=(Vector3& v1, const Vector3& v2) {
 Vector3 operator-(const Vector3& v1, const Vector3& v2) { 
 	Vector3 temp(v1);
 	return temp -= v2;
+}
+
+Vector3 operator+=(Vector3& v1, const Vector3& v2) {
+	v1.x += v2.x;
+	v1.y += v2.y;
+	v1.z += v2.z;
+	return v1;
+}
+
+Vector3 operator+(const Vector3& v1, const Vector3& v2) {
+	Vector3 temp(v1);
+	return temp += v2;
 }

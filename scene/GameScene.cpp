@@ -66,7 +66,7 @@ void GameScene::Update() {
 
 	skydome_->Update();
 	//プレイヤー更新
-	player_->Update();
+	player_->Update(viewProjection_);
 	//敵ポップ
 	UpdateEnemyPopCommands();
 	//敵更新

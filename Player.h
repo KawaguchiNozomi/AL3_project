@@ -26,7 +26,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(ViewProjection& viewProjection);
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -50,6 +50,8 @@ public:
 	
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
 
+	static const int kFireInterval = 2;
+
 private:
 	uint32_t textureHandle_ = 0;
 	Model* model_ = nullptr;
@@ -63,4 +65,6 @@ private:
 	/// 攻撃
 	/// </summary>
 	void Attack();
+	int32_t fireTimer_ = 0;
+	Vector3 GetReticleWorldPos();
 };
