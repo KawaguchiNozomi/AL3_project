@@ -68,13 +68,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 
-#ifdef _DEBUG
+
 		//ESCキーで終了
 		if (input->TriggerKey(DIK_ESCAPE)) {
 			break;
 		}
 
-#endif //DEBUG
+
 
 		// ImGui受付開始
 		imguiManager->Begin();

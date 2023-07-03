@@ -109,28 +109,6 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform3DReticle_.UpdateMatrix();
 	worldTransform3DReticle_.TransferMatrix();
 
-
-	/*
-	//自機のワールド座標から3Dレティクルのワールド座標を計算
-	//自機から3Dレティクルへの距離
-	const float kDistancePlayerTo3DReticle = 50.0f;
-	//自機から3Dレティクルへのオフセット（Z+向き）
-	Vector3 offset = {0, 0, 1.0f};
-	offset = TransforNomal(offset, worldTransform_.matWorld_);
-	offset = Normalize(offset)*kDistancePlayerTo3DReticle;
-	worldTransform3DReticle_.translation_ = TransforNomal(worldTransform_.translation_,worldTransform_.matWorld_);
-	worldTransform3DReticle_.UpdateMatrix();
-	//worldTransform3DReticle_.TransferMatrix();
-
-	Vector3 positionReticle = worldTransform3DReticle_.translation_;
-	Matrix4x4 matViewport = MakeViewportMatrix(0, 0, 1280, 720, 0, 1);
-	Matrix4x4 matViewProjectionViewPort =
-	    viewProjection_.matView * viewProjection_.matProjection * matViewport;
-	positionReticle = Transform(positionReticle, matViewProjectionViewPort);
-	sprite2DRetecle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
-	*/
-
-
 	//キャラクター攻撃処理
 	fireTimer_--;
 	Attack();
@@ -199,9 +177,6 @@ void Player::Attack() {
 
 			// 弾の速度
 			const float kBulletSpeed = 1.0f;
-			// Vector3 velocity(0, 0, kBulletSpeed);
-			// velocity = TransforNomal(velocity, worldTransform_.matWorld_);
-			//
 			// 3Dレティクルと自機の差分ベクトル
 			Vector3 velocity = GetReticleWorldPos() - GetWorldPosition();
 			velocity = Normalize(velocity) * kBulletSpeed;
