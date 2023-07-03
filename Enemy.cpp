@@ -71,7 +71,7 @@ void Enemy::LeaveUpdate() {
 		down = 1.5f;
 	}
 	worldTransform_.translation_.y -= down;
-	worldTransform_.rotation_.y -= 0.1f;
+	worldTransform_.rotation_.y -= 0.3f;
 	if (worldTransform_.translation_.x > 0) {
 		worldTransform_.translation_.x += 0.2f;
 	} else {

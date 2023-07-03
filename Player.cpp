@@ -5,6 +5,7 @@ Player::~Player() {
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
 	}
+	delete sprite2DRetecle_;
 }
 
 void Player::Initialize(Model* model, uint32_t textureHandle,Vector3 position) { 
@@ -16,6 +17,13 @@ void Player::Initialize(Model* model, uint32_t textureHandle,Vector3 position) {
 
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
+	worldTransform3DReticle_.Initialize();
+	uint32_t textureReticle = TextureManager::Load("target.png");
+	sprite2DRetecle_ = Sprite::Create(
+	    textureReticle, {640, 360}, {1,1,1,1},
+	    {0.5, 0.5});
+	viewProjection_.Initialize();
+	
 }
 
 void Player::Update() {  
@@ -69,6 +77,26 @@ void Player::Update() {
 
 	worldTransform_.TransferMatrix();
 
+	//自機のワールド座標から3Dレティクルのワールド座標を計算
+	//自機から3Dレティクルへの距離
+	const float kDistancePlayerTo3DReticle = 50.0f;
+	//自機から3Dレティクルへのオフセット（Z+向き）
+	Vector3 offset = {0, 0, 1.0f};
+	offset = TransforNomal(offset, worldTransform_.matWorld_);
+	offset = Normalize(offset)*kDistancePlayerTo3DReticle;
+	worldTransform3DReticle_.translation_ = TransforNomal(worldTransform_.translation_,worldTransform_.matWorld_);
+	worldTransform3DReticle_.UpdateMatrix();
+	//worldTransform3DReticle_.TransferMatrix();
+
+	Vector3 positionReticle = worldTransform3DReticle_.translation_;
+	Matrix4x4 matViewport = MakeViewportMatrix(0, 0, 1280, 720, 0, 1);
+	Matrix4x4 matViewProjectionViewPort =
+	    viewProjection_.matView * viewProjection_.matProjection * matViewport;
+	positionReticle = Transform(positionReticle, matViewProjectionViewPort);
+	sprite2DRetecle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+
+
+
 	//キャラクター攻撃処理
 	Attack();
 	//弾を更新する
@@ -84,6 +112,8 @@ void Player::Update() {
 	    worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z};
 	ImGui::SliderFloat3("pos", sliderValue, -20.0f, 20.0f);
+	float reticle[3] = {worldTransform3DReticle_.translation_.x,worldTransform3DReticle_.translation_.y,worldTransform3DReticle_.translation_.z};
+	ImGui::InputFloat3("reticle", reticle);
 	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
 	ImGui::End();
 #endif // DEBUG
@@ -115,6 +145,11 @@ void Player::Attack() {
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = TransforNomal(velocity, worldTransform_.matWorld_);
+		//Vector3 velocity = {
+		//    (worldTransform3DReticle_.translation_.x - worldTransform_.translation_.x),
+		//    (worldTransform3DReticle_.translation_.y - worldTransform_.translation_.y),
+		//    (worldTransform3DReticle_.translation_.z - worldTransform_.translation_.z)};
+		//velocity = Normalize(velocity) * kBulletSpeed;
 		//弾を生成し初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, GetWorldPosition(), velocity);
@@ -124,3 +159,5 @@ void Player::Attack() {
 }
 
 void Player::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent; }
+
+void Player::DrawUI() { sprite2DRetecle_->Draw(); }

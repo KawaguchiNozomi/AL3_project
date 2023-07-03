@@ -6,7 +6,10 @@
 #include "ImGuiManager.h"
 #include <assert.h>
 #include "PlayerBullet.h"
+#include "Sprite.h"
 #include <list>
+class GameScene;
+
 /// <summary>
 /// 
 /// </summary>
@@ -35,6 +38,8 @@ public:
 	/// <param name="parent"></param>
 	void SetParent(const WorldTransform* parent);
 
+	void DrawUI();
+
 	Vector3 GetWorldPosition();
 
 	const float GetRadius() { return radius_; }
@@ -51,9 +56,11 @@ private:
 	WorldTransform worldTransform_;
 	Input* input_ = nullptr;
 	std::list<PlayerBullet*> bullets_;
+	WorldTransform worldTransform3DReticle_;
+	Sprite* sprite2DRetecle_ = nullptr;
+	ViewProjection viewProjection_;
 	/// <summary>
 	/// 攻撃
 	/// </summary>
 	void Attack();
-
 };

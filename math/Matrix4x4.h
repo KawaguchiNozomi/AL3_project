@@ -29,6 +29,19 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 /// <returns></returns>
 Matrix4x4 Inverse(const Matrix4x4& m);
 
+/// <summary>
+/// ビューポート行列生成
+/// </summary>
+/// <param name="left"></param>
+/// <param name="top"></param>
+/// <param name="width"></param>
+/// <param name="height"></param>
+/// <param name="minDepth"></param>
+/// <param name="maxDepth"></param>
+/// <returns></returns>
+Matrix4x4 MakeViewportMatrix(
+    float left, float top, float width, float height, float minDepth, float maxDepth);
+
 //代入演算子オーバーロード
 Matrix4x4& operator*=(Matrix4x4& m1,const Matrix4x4& m2);
 Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
