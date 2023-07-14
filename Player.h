@@ -10,6 +10,7 @@
 #include <list>
 class GameScene;
 
+
 /// <summary>
 /// 
 /// </summary>
@@ -26,7 +27,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(ViewProjection& viewProjection);
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -51,6 +52,7 @@ public:
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
 
 private:
+	Vector3 GetReticleWorldPos();
 	uint32_t textureHandle_ = 0;
 	Model* model_ = nullptr;
 	WorldTransform worldTransform_;
