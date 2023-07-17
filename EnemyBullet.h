@@ -3,8 +3,9 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Collider.h"
 
-class EnemyBullet {
+class EnemyBullet : public Collider {
 public:
 	/// <summary>
 	/// 初期化
@@ -24,12 +25,13 @@ public:
 
 	bool IsDead() const { return isDead_; }
 
-	Vector3 GetWorldPosition();
+	
+	Vector3 GetWorldPosition() override;
 
 	const float GetRadius() { return radius_; }
 	const float radius_ = 1.0f;
 
-	void OnCollision();
+	void OnCollision() override;
 
 
 private:

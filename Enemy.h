@@ -4,6 +4,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include <list>
+#include "Collider.h"
 //前方宣言
 class Player;
 class GameScene;
@@ -11,7 +12,7 @@ class GameScene;
 /// <summary>
 /// 敵
 /// </summary>
-class Enemy {
+class Enemy :public Collider {
 public:
 	~Enemy();
 	/// <summary>
@@ -33,13 +34,13 @@ public:
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition() override;
 
 	const float GetRadius() { return radius_; }
 	bool GetIsDead() { return isDead; }
 	const float radius_ = 1.0f;
 
-	void OnCollision();
+	void OnCollision() override;
 
 	//const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 

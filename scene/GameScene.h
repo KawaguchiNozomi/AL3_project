@@ -90,6 +90,7 @@ private: // メンバ変数
 
 	std::stringstream enemyPopCommands;
 
+	void CheckCollisionPair(Collider* collideA, Collider* colliderB);
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

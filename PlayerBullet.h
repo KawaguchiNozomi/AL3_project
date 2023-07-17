@@ -3,10 +3,11 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Collider.h"
 /// <summary>
 /// 自キャラの弾
 /// </summary>
-class PlayerBullet {
+class PlayerBullet :public Collider{
 public:
 	/// <summary>
 	/// 初期化
@@ -23,13 +24,13 @@ public:
 	/// </summary>
 	/// <param name="viewProjection">ビュープロジェクション</param>
 	void Draw(const ViewProjection& viewProjection);
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition() override;
 	bool IsDead() const { return isDead_; }
 
 	const float GetRadius() { return radius_; }
 	const float radius_ = 1.0f;
 
-	void OnCollision();
+	void OnCollision() override;
 
 private:
 	WorldTransform worldTransform_;

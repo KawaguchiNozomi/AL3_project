@@ -179,7 +179,7 @@ void GameScene::Draw() {
 
 void GameScene::CheckAllCollisions() { 
 	//判定対象AとBの座標
-	Vector3 posA, posB;
+	//Vector3 posA, posB;
 
     //プレイヤーの弾リスト
     //
@@ -187,64 +187,27 @@ void GameScene::CheckAllCollisions() {
     //敵の弾リスト
 	const std::list<EnemyBullet*>& enemyBullets = enemyBullets_;
 
-	//const std::list<Enemy*>& enemy = enemy_;
+	const std::list<Enemy*>& enemys = enemy_;
+#pragma region
+	for (EnemyBullet* enemyBullet : enemyBullets) {
+		CheckCollisionPair(player_, enemyBullet);
+	}
+#pragma endregion
+#pragma region
+	for (EnemyBullet* enemyBullet : enemyBullets) {
+		for (PlayerBullet* playerBullet : playerBullets) {
 
-    #pragma region
-    posA = player_->GetWorldPosition();
-    
-    for (EnemyBullet* bullet : enemyBullets) {
-    
-    	posB = bullet->GetWorldPosition();
-    	float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-    	                 (posB.y - posA.y) * (posB.y - posA.y) +
-    	                 (posB.z - posA.z) * (posB.z - posA.z);
-    	float radius =
-    		(player_->GetRadius() + bullet->GetRadius()) * (player_->GetRadius() + bullet->GetRadius());
-    
-		if (distance <= radius) {
-			player_->OnCollision();
-			bullet->OnCollision();
-		}
-    }
-	#pragma endregion
-
-	#pragma region
-	for (Enemy* enemy : enemy_) {
-		posA = enemy->GetWorldPosition();
-		for (PlayerBullet* bullet : playerBullets) {
-			posB = bullet->GetWorldPosition();
-
-			float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-			                 (posB.y - posA.y) * (posB.y - posA.y) +
-			                 (posB.z - posA.z) * (posB.z - posA.z);
-			float radius = (enemy->GetRadius() + bullet->GetRadius()) *
-			               (enemy->GetRadius() + bullet->GetRadius());
-
-			if (distance <= radius) {
-				enemy->OnCollision();
-				bullet->OnCollision();
-			}
+			CheckCollisionPair(playerBullet, enemyBullet);
 		}
 	}
-	#pragma endregion
-
-	#pragma region
-	for (PlayerBullet* bulletP : playerBullets) {
-		posA = bulletP->GetWorldPosition();
-		for (EnemyBullet* bulletE : enemyBullets) {
-			posB = bulletE->GetWorldPosition();
-			float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-			                 (posB.y - posA.y) * (posB.y - posA.y) +
-			                 (posB.z - posA.z) * (posB.z - posA.z);
-			float radius = (bulletP->GetRadius() + bulletE->GetRadius()) *
-			               (bulletP->GetRadius() + bulletE->GetRadius());
-
-			if (distance <= radius) {
-				bulletP->OnCollision();
-				bulletE->OnCollision();
-			}
+#pragma endregion
+#pragma region
+	for (PlayerBullet* playerBullet : playerBullets) {
+		for (Enemy* enemy : enemys) {
+			CheckCollisionPair(enemy, playerBullet);
 		}
 	}
+#pragma endregion
 }
 
 void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
@@ -320,5 +283,18 @@ void GameScene::UpdateEnemyPopCommands() {
 			//コマンドループを抜ける
 			break;
 		} 
+	}
+}
+
+void GameScene::CheckCollisionPair(Collider* collideA, Collider* colliderB) {
+	Vector3 posA = collideA->GetWorldPosition();
+	Vector3 posB = colliderB->GetWorldPosition();
+	float distance = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) +
+	                 (posB.z - posA.z) * (posB.z - posA.z);
+	float radius = (collideA->GetRadius() + colliderB->GetRadius()) *
+	               (collideA->GetRadius() + colliderB->GetRadius());
+	if (distance <= radius) {
+		collideA->OnCollision();
+		colliderB->OnCollision();
 	}
 }

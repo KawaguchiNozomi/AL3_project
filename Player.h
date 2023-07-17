@@ -8,12 +8,13 @@
 #include "PlayerBullet.h"
 #include "Sprite.h"
 #include <list>
+#include "Collider.h"
 class GameScene;
 
 /// <summary>
 /// 
 /// </summary>
-class Player {
+class Player :public Collider{
 public:
 	/// <summary>
 	/// デストラクタ
@@ -40,12 +41,12 @@ public:
 
 	void DrawUI();
 
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition() override;
 
 	const float GetRadius() { return radius_; }
 	const float radius_ = 1.0f;
 
-	void OnCollision();
+	void OnCollision() override;
 
 	
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
