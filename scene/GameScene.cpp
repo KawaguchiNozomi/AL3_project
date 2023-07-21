@@ -178,21 +178,37 @@ void GameScene::Draw() {
 }
 
 void GameScene::CheckAllCollisions() { 
-	//判定対象AとBの座標
-	//Vector3 posA, posB;
 
     //プレイヤーの弾リスト
-    //
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
     //敵の弾リスト
 	const std::list<EnemyBullet*>& enemyBullets = enemyBullets_;
 
 	const std::list<Enemy*>& enemys = enemy_;
+
+	std::list<Collider*> colliders_;
+	colliders_.push_back(player_);
+	for (Enemy* enemy : enemys) {
+		colliders_.push_back(enemy);
+	}
+	for (EnemyBullet* enemyBullet : enemyBullets) {
+		colliders_.push_back(enemyBullet);
+	}
+	for (PlayerBullet* playerBullet : playerBullets) {
+
+		colliders_.push_back(playerBullet);
+	}
+	std::list<Collider*>::iterator itrA = colliders_.begin();
+	for (; itrA != colliders_.end(); ++itrA) {
+	
+	}
+
 #pragma region
 	for (EnemyBullet* enemyBullet : enemyBullets) {
 		CheckCollisionPair(player_, enemyBullet);
 	}
 #pragma endregion
+
 #pragma region
 	for (EnemyBullet* enemyBullet : enemyBullets) {
 		for (PlayerBullet* playerBullet : playerBullets) {
@@ -201,6 +217,7 @@ void GameScene::CheckAllCollisions() {
 		}
 	}
 #pragma endregion
+
 #pragma region
 	for (PlayerBullet* playerBullet : playerBullets) {
 		for (Enemy* enemy : enemys) {

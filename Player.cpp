@@ -118,7 +118,10 @@ void Player::Update(ViewProjection& viewProjection) {
 	}
 
 	//ImGui
+	int a = 0;
+	
 #ifdef _DEBUG
+	a = 1;
 	ImGui::SetNextWindowSize({250,250});
 	ImGui::Begin("Player");
 	float sliderValue[3] = {
@@ -140,6 +143,10 @@ void Player::Update(ViewProjection& viewProjection) {
 	    worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
 	ImGui::End();
 #endif // DEBUG
+	if (a == 0) {
+		ImGui::Begin("Player");
+		ImGui::Text("Move:WASD fire:SPACE");
+	}
 }
 
 void Player::Draw(ViewProjection& viewProjection) { 
