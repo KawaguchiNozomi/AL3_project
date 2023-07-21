@@ -27,9 +27,8 @@ void Player::Initialize(Model* model, uint32_t textureHandle,Vector3 position) {
 
 }
 
-void Player::Update(ViewProjection& viewProjection) {  
-	//viewProjection_ = viewProjection;
-	viewProjection;
+void Player::Update() {  
+
 		bullets_.remove_if([](PlayerBullet* bullet) {
 		if (bullet->IsDead()) {
 			delete bullet;
@@ -133,7 +132,6 @@ void Player::Update(ViewProjection& viewProjection) {
 
 void Player::Draw(ViewProjection& viewProjection) { 
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	model_->Draw(worldTransform3DReticle_, viewProjection, textureHandle_);
 	for (PlayerBullet*bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
@@ -178,6 +176,7 @@ void Player::Attack() {
 	}
 }
 
-void Player::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent; }
+void Player::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent;}
+
 
 void Player::DrawUI() { sprite2DRetecle_->Draw(); }

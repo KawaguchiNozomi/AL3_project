@@ -65,8 +65,9 @@ void GameScene::Initialize() {
 void GameScene::Update() { 
 
 	skydome_->Update();
-	//プレイヤー更新
-	player_->Update(viewProjection_);
+	// プレイヤー更新
+	player_->Update();
+	
 	//敵ポップ
 	UpdateEnemyPopCommands();
 	//敵更新
@@ -118,7 +119,6 @@ void GameScene::Update() {
 	} else {
 		//viewProjection_.UpdateMatrix();
 	}
-	
 }
 
 void GameScene::Draw() {

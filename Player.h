@@ -27,7 +27,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(ViewProjection& viewProjection);
+	void Update();
 	/// <summary>
 	/// 描画
 	/// </summary>
