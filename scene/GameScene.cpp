@@ -5,8 +5,7 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() { 
-	delete model_;
-	delete player_;
+	
 }
 
 void GameScene::Initialize() {
@@ -16,14 +15,15 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	textureHandle_ = TextureManager::Load("sample.png");
-	model_ = Model::Create();
+	//reset:既に代入済みのアドレスを解放/代入する
+	model_.reset(Model::Create());
 
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 	//	自キャラ生成
-	player_ = new Player();
+	player_ = std::make_unique<Player>();
 	//自キャラ初期化
-	player_->Initialize(model_,textureHandle_);
+	player_->Initialize(model_.get(),textureHandle_);
 }
 
 void GameScene::Update() { player_->Update(); }
