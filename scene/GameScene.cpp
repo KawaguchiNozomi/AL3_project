@@ -183,10 +183,11 @@ void GameScene::CheckAllCollisions() {
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
     //敵の弾リスト
 	const std::list<EnemyBullet*>& enemyBullets = enemyBullets_;
-
+	//敵リスト
 	const std::list<Enemy*>& enemys = enemy_;
 
 	std::list<Collider*> colliders_;
+
 	colliders_.push_back(player_);
 	for (Enemy* enemy : enemys) {
 		colliders_.push_back(enemy);
