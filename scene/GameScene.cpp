@@ -179,11 +179,11 @@ void GameScene::Draw() {
 
 void GameScene::CheckAllCollisions() { 
 
-    //プレイヤーの弾リスト
+	    // プレイヤーの弾リスト
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
-    //敵の弾リスト
+	// 敵の弾リスト
 	const std::list<EnemyBullet*>& enemyBullets = enemyBullets_;
-	//敵リスト
+	// 敵リスト
 	const std::list<Enemy*>& enemys = enemy_;
 
 	std::list<Collider*> colliders_;
@@ -199,33 +199,17 @@ void GameScene::CheckAllCollisions() {
 
 		colliders_.push_back(playerBullet);
 	}
+
 	std::list<Collider*>::iterator itrA = colliders_.begin();
 	for (; itrA != colliders_.end(); ++itrA) {
-	
-	}
-
-#pragma region
-	for (EnemyBullet* enemyBullet : enemyBullets) {
-		CheckCollisionPair(player_, enemyBullet);
-	}
-#pragma endregion
-
-#pragma region
-	for (EnemyBullet* enemyBullet : enemyBullets) {
-		for (PlayerBullet* playerBullet : playerBullets) {
-
-			CheckCollisionPair(playerBullet, enemyBullet);
+		Collider* A = *itrA;
+		std::list<Collider*>::iterator itrB = itrA;
+		itrB++;
+		for (; itrB != colliders_.end(); ++itrB) {
+			Collider* B = *itrB;
+			CheckCollisionPair(A, B);
 		}
 	}
-#pragma endregion
-
-#pragma region
-	for (PlayerBullet* playerBullet : playerBullets) {
-		for (Enemy* enemy : enemys) {
-			CheckCollisionPair(enemy, playerBullet);
-		}
-	}
-#pragma endregion
 }
 
 void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
@@ -305,6 +289,10 @@ void GameScene::UpdateEnemyPopCommands() {
 }
 
 void GameScene::CheckCollisionPair(Collider* collideA, Collider* colliderB) {
+	if (collideA->GetCollisionAttribute() != colliderB->GetCollisionMask()  ||
+	    colliderB->GetCollisionAttribute() != collideA->GetCollisionMask() ) {
+		return;
+	}
 	Vector3 posA = collideA->GetWorldPosition();
 	Vector3 posB = colliderB->GetWorldPosition();
 	float distance = (posB.x - posA.x) * (posB.x - posA.x) + (posB.y - posA.y) * (posB.y - posA.y) +

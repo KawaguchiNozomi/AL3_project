@@ -19,6 +19,9 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	// 引数で受け取った初期座標をセット
 	worldTransform_.translation_ = position;
 	ApproachIntialize();
+
+	SetCollisionAttribute(CollisionConfig::kCollisionAttributeEnemy_);
+	SetCollisionMask(CollisionConfig::kCollisionAttributePlayer_);
 }
 
 void Enemy::Update() {

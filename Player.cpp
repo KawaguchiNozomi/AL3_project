@@ -22,7 +22,8 @@ void Player::Initialize(Model* model, uint32_t textureHandle,Vector3 position) {
 	sprite2DRetecle_ = Sprite::Create(
 	    textureReticle, {640, 360}, {1,1,1,1},
 	    {0.5, 0.5});
-	
+	SetCollisionAttribute(CollisionConfig::kCollisionAttributePlayer_);
+	SetCollisionMask(CollisionConfig::kCollisionAttributeEnemy_);
 }
 
 void Player::Update(ViewProjection& viewProjection) {  
