@@ -16,7 +16,7 @@
 #include "EnemyBullet.h"
 #include<list>
 #include <sstream>
-
+#include "CollisionManager.h"
 
 
 /// <summary>
@@ -49,8 +49,6 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw();
-
-	void CheckAllCollisions();
 
 	void AddEnemyBullet(EnemyBullet* enemyBullet);
 	void AddEnemy(Vector3 pos);
@@ -90,7 +88,9 @@ private: // メンバ変数
 
 	std::stringstream enemyPopCommands;
 
-	void CheckCollisionPair(Collider* collideA, Collider* colliderB);
+	//衝突マネージャー
+	CollisionManager* collisionManager_;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
